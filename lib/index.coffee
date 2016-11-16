@@ -146,7 +146,7 @@ class EPub
         $(elem).attr("src", "images/#{id}.#{extension}")
         dir = content.dir
         self.options.images.push {id, url, dir, mediaType, extension}
-      content.data = content.data = entities.encodeXML($.xml())
+      content.data = $.xml()
       content
 
     if @options.cover
