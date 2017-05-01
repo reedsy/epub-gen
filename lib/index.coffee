@@ -84,7 +84,6 @@ class EPub
         content.filePath = path.resolve self.uuid, "./OEBPS/#{index}_#{titleSlug}.xhtml"
       else
         content.href = if content.filename.match(/\.xhtml$/) then content.filename else "#{content.filename}.xhtml"
-        console.log(content.href)
         if content.filename.match(/\.xhtml$/)
           content.filePath = path.resolve self.uuid, "./OEBPS/#{content.filename}"
         else
@@ -140,12 +139,16 @@ class EPub
 
       $("img").each (index, elem)->
         url = $(elem).attr("src")
-        id = uuid()
-        mediaType = mime.lookup url
-        extension = mime.extension mediaType
+        if image = self.options.images.find((element) -> element.src == src)
+          id = image.id
+          extension = image.extension
+        else
+          id = uuid()
+          mediaType = mime.lookup url
+          extension = mime.extension mediaType
+          dir = content.dir
+          self.options.images.push {id, url, dir, mediaType, extension}
         $(elem).attr("src", "images/#{id}.#{extension}")
-        dir = content.dir
-        self.options.images.push {id, url, dir, mediaType, extension}
       content.data = $.xml()
       content
 
