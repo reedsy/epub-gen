@@ -139,7 +139,9 @@ class EPub
 
       $("img").each (index, elem)->
         url = $(elem).attr("src")
-        if image = self.options.images.find((element) -> element.url == url)
+        if image = self.options.images.reduce((test, element) ->
+          element.url == url || test
+        , false)
           id = image.id
           extension = image.extension
         else
